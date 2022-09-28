@@ -3,5 +3,5 @@
 ## 進度~
 
 - [x] vue-airbnb-style-datepicker
-- [ ] vue-fullCalendar
+- [x] vue-fullCalendar
 - [x] js-fullCalendar
