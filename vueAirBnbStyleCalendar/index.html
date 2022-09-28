@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+		/>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+		<!-- 要引用 vue-airbnb-style-datepicker.min.css -->
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/vue-airbnb-style-datepicker@2.1.0/dist/vue-airbnb-style-datepicker.min.css"
+		/>
+		<style>
+			html,
+			body {
+				min-height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="datepicker-trigger">
+				<!-- 可以換成其他輸入框, 只要id有綁到 日曆元件的 trigger-element-id prop 就好 -->
+				<input
+					type="text"
+					id="trigger-range"
+					:value="date1 + ' - ' + date2"
+					readonly
+				/>
+
+				<!-- 元件另外有提供 prop, emit事件 -->
+				<!-- https://mikaeledebro.gitbooks.io/vue-airbnb-style-datepicker/content/INSTALLATION.html#props-and-events -->
+
+				<!-- NOTE: 要特別注意 prop, emit 寫在 html 裡面時, 要從小駝峰命名改為短橫線分隔命名分隔命名 -->
+				<!-- ex. dateOne >>> date-one -->
+				<!-- 原因: https://v2.cn.vuejs.org/v2/guide/components-props.html#Prop-%E7%9A%84%E5%A4%A7%E5%B0%8F%E5%86%99-camelCase-vs-kebab-case -->
+
+				<!-- NOTE: emit 的掛法 要從 @ 改為 v-on: -->
+				<!-- ex. @apply="handleApplyClick" >>> v-on:apply="handleApplyClick" -->
+				<!-- 原因: 跟 Razor 語法衝突 -->
+				<airbnb-style-datepicker
+					:trigger-element-id="'trigger-range'"
+					:date-one="date1"
+					:date-two="date2"
+					:disabled-dates="disableDates"
+					v-on:date-one-selected="handleDateOneSelected"
+					v-on:date-two-selected="handleDateTwoSelected"
+					v-on:apply="handleApplyClick"
+				></airbnb-style-datepicker>
+			</div>
+		</div>
+
+		<!-- 日期套件 dayjs (選用) <<< 建議用, 封裝好很多常用對日期處理的方法 -->
+		<!-- https://day.js.org/zh-CN/ -->
+		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+		<!-- 引用 vue -->
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+		<!-- 引用 vue-airbnb-style-datepicker.min.js -->
+		<script src="https://unpkg.com/vue-airbnb-style-datepicker@2.1.0/dist/vue-airbnb-style-datepicker.min.js"></script>
+
+		<script>
+			// 日曆套件提供的全域選項設定 可以設定如顯示文字, 樣式... 會套用到全部的日曆上 選項參考下方連結
+			// https://mikaeledebro.gitbooks.io/vue-airbnb-style-datepicker/content/INSTALLATION.html#plugin-options
+			const datepickerOptions = {
+				sundayFirst: true,
+				days: [
+					'星期一',
+					'星期二',
+					'星期三',
+					'星期四',
+					'星期五',
+					'星期六',
+					'星期天'
+				],
+				daysShort: ['一', '二', '三', '四', '五', '六', '天'],
+				texts: {
+					apply: '確認',
+					cancel: '取消',
+					keyboardShortcuts: '鍵盤快捷鍵'
+				}
+				// colors: {
+				// 	selected: '#00a699',
+				// 	inRange: '#66e2da',
+				// 	selectedText: '#fff',
+				// 	text: '#565a5c',
+				// 	inRangeBorder: '#33dacd',
+				// 	disabled: '#fff',
+				// 	hoveredInRange: '#67f6ee'
+				// }
+			}
+
+			// 註冊 plugin
+			Vue.use(window.AirbnbStyleDatepicker, datepickerOptions)
+
+			var app = new Vue({
+				el: '#app',
+				data: {
+					date1: '',
+					date2: '',
+					disableDates: [],
+
+					// mode: 預設 range, 可以換成 single 就變只能單選了 可以看需求應用
+					mode: 'range'
+				},
+				mounted() {
+					// 1. 一開始就設定日期
+					// this.date1 = dayjs()
+					// this.date2 = dayjs().add(7, 'day')
+					// 2. 設定停止日期
+					// this.disableDates = ['2022-10-10']
+				},
+				methods: {
+					handleDateOneSelected(val) {
+						this.date1 = val
+					},
+					handleDateTwoSelected(val) {
+						this.date2 = val
+					},
+					handleApplyClick() {
+						// 當確認按鈕被點擊時
+						console.log('我被點了..')
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
