@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			<my-calendar
+				v-bind="calendarOptions"
+				:events="events"
+				@date-click="handleDateClick"
+				@select="handleSelect"
+        @event-click="handleEventClick"
+        @event-set="handleEventSet"
+        @event-add="handleEventAdd"
+        @event-change="handleEventChange"
+        @event-remove="handleEventRemove"
+			/>
+		</div>
+
+    <!-- vue -->
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+
+    <!-- 使用 full-calendar 要使用的 library -->
+    <link href="https://unpkg.com/@fullcalendar/core@4.1.0/main.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/@fullcalendar/daygrid@4.1.0/main.css" rel="stylesheet"/>
+    <link href="https://unpkg.com/@fullcalendar/timegrid@4.1.0/main.css" rel="stylesheet"/>
+    <script src="https://unpkg.com/@fullcalendar/core@4.1.0/main.js"></script>
+    <script src="https://unpkg.com/@fullcalendar/daygrid@4.1.0/main.js"></script>
+    <script src="https://unpkg.com/@fullcalendar/timegrid@4.1.0/main.js"></script>
+    <script src="https://unpkg.com/@fullcalendar/interaction@4.1.0/main.js"></script>
+    <script src="https://unpkg.com/@fullcalendar/vue@4.1.0/main.umd.js"></script>
+    
+
+    <!-- 原生的 full-calendar vue 套件, 不是設計成給cdn引入的使用方式, 所以有再封裝一層到myCalendar.js裡面 -->
+		<script src="./myCalendar.js"></script>
+
+		<!-- 日期套件 dayjs (選用) <<< 建議用, 封裝好很多常用對日期處理的方法 -->
+		<!-- https://day.js.org/zh-CN/ -->
+		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+		<script>
+			new Vue({
+				el: '#app',
+				data: {
+          // calendar參數 可以參考原生full-calendar參數 大致相同
+					calendarOptions: {
+						class: 'app-calendar',
+						defaultView: 'dayGridMonth',
+						locale: 'zh-TW',
+						ref: 'fullCalendar',
+						header: {
+							left: 'prev,next today',
+							center: 'title',
+							right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+						},
+						weekends: true,
+						selectable: true
+					},
+					events: [
+						{
+							title: 'Event Now',
+							start: new Date()
+						}
+					]
+				},
+				methods: {
+          // 日曆提供的事件都在下面了
+					handleDateClick(arg) {},
+					handleSelect(info) {},
+          handleEventClick(event) {},
+          handleEventSet(event) {},
+          handleEventAdd(event) {},
+          handleEventChange(event) {},
+          handleEventRemove(event) {},
+				}
+			})
+		</script>
+	</body>
+</html>
