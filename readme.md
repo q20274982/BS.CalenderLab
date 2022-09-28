@@ -4,4 +4,4 @@
 
 - [x] vue-airbnb-style-datepicker
 - [ ] vue-fullCalendar
-- [ ] js-fullCalendar
+- [x] js-fullCalendar
