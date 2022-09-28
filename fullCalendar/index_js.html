@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css"
+		/>
+		<style>
+			#calendar {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="calendar"></div>
+
+		<!-- 日期套件 dayjs (選用) <<< 建議用, 封裝好很多常用對日期處理的方法 -->
+		<!-- https://day.js.org/zh-CN/ -->
+		<script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+		<!-- fullCalendar.js -->
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+		<script>
+			window.onload = function () {
+				// DOC: https://fullcalendar.io/docs
+
+				const calendarEl = document.getElementById('calendar')
+				// 初始化
+				const calendar = new FullCalendar.Calendar(calendarEl, {
+					initialView: 'dayGridMonth', //timeGridWeek
+					fixedWeekCount: false,
+					locale: 'zh-TW',
+					editable: true,
+					dateClick: function (info) {
+						// 日期點擊事件
+						alert('clicked ' + info.dateStr)
+					},
+					eventClick: function (info) {
+						// fullCalender event點擊事件
+						alert('Event: ' + info.event.title)
+						alert(
+							'Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY
+						)
+						alert('View: ' + info.view.type)
+
+						// change the border color just for fun
+						info.el.style.borderColor = 'red'
+					},
+					events: [
+						// DOC: https://fullcalendar.io/docs/event-object
+						{
+							id: '22',
+							title: '會被移掉的活動',
+							allDay: true,
+							start: dayjs().subtract(3, 'days').format('YYYY-MM-DD')
+						},
+						{
+							title: '昨天的活動',
+							display: 'background',
+							allDay: true,
+							start: dayjs().subtract(1, 'days').format('YYYY-MM-DD'),
+							className: ['my-class']
+						},
+						{
+							title: '持續一周的活動',
+							start: dayjs().add(7, 'days').format('YYYY-MM-DD'),
+							end: dayjs().add(14, 'days').format('YYYY-MM-DD'),
+							color: 'lightBlue'
+						}
+					]
+				})
+
+				// 渲染
+				calendar.render()
+
+				// 渲染後執行 新增或刪除操作
+				setTimeout(() => {
+					// 手動新增事件
+					calendar.addEvent({
+						title: '可以自己加',
+						start: dayjs().format('YYYY-MM-DD')
+					})
+				}, 2000)
+
+				setTimeout(() => {
+					// 移除事件
+					const event = calendar.getEventById('22')
+					event && event.remove()
+				}, 3000)
+			}
+		</script>
+	</body>
+</html>
